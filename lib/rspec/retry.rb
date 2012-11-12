@@ -3,11 +3,20 @@ require 'rspec_ext/rspec_ext'
 
 module RSpec
   class Retry
+
+    def self.default_retries
+      @@default_retries || 1
+    end
+
+    def self.default_retries=(default_retries)
+      @@default_retries = default_retries
+    end
+
     def self.apply
       RSpec.configure do |config|
         config.add_setting :verbose_retry, :default => false
         config.around(:each) do |example|
-          retry_count = example.metadata[:retry] || 1
+          retry_count = example.metadata[:retry] || default_retries
           retry_count.times do |i|
             if RSpec.configuration.verbose_retry?
               if i > 0
