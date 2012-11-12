@@ -16,7 +16,7 @@ module RSpec
       RSpec.configure do |config|
         config.add_setting :verbose_retry, :default => false
         config.around(:each) do |example|
-          retry_count = example.metadata[:retry] || default_retries
+          retry_count = example.metadata[:retry] || RSpec::Retry.default_retries
           retry_count.times do |i|
             if RSpec.configuration.verbose_retry?
               if i > 0
